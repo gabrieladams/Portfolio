@@ -2,6 +2,7 @@ export const mediaQuaries = {
   mobile_Device: '(max-width: 767px)',
   mobile_Xs: '(max-width: 375px)',
   mobile_Sm: '(max-width: 425px)',
+  above_Mobile_Sm: '(max-width: 426px)',
   mobile_Md: '(max-width: 575px)',
   mobile_Lg: '(min-width: 576px) and (max-width: 767px)',
   above_Mobile_Device: '(min-width: 768px)',

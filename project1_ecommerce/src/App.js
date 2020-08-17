@@ -9,6 +9,11 @@ function App() {
     <div className='App'>
       <NavBar />
       <h1>This is a react application.</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi quo
+        blanditiis porro reprehenderit! Asperiores nesciunt beatae recusandae
+        aliquam eos dolores.
+      </p>
       {/* <div>
         {products.map((product) => {
           const { productImage } = product;

@@ -2,75 +2,98 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavItem from './NavItem';
-import NavMenuIcon from './NavMenuIcon';
+import NavMenuToggler from './NavMenuToggler';
 import { mediaQuaries as mQ } from '../mediaquaries';
 
 const transition = 'color 0.2s ease-in-out 0s';
 
 const StyledNavBar = styled.div`
-  padding: 1.5rem;
   background-color: #f1f1f1;
 `;
 
-const Container = styled.div``;
+const Container = styled.div`
+  @media ${mQ.mobile_Md} {
+    padding-left: 0;
+    padding-right: 0;
+  }
+`;
 
 const FlexContainer = styled.div``;
 
-const Logo = styled.a`
-  padding: 1rem;
-
-  font-size: 2rem;
-  letter-spacing: 2px;
-  color: ${(props) => props.theme.tone_2};
-
-  &:link,
-  &:hover,
-  &:active,
-  &:visited {
-    color: ${(props) => props.theme.tone_2};
-  }
-
-  @media ${mQ.mobile_Sm} {
-    padding: 0.5rem 0.5rem 2rem;
+const LogoWrapper = styled.div`
+  @media ${mQ.mobile_Md} {
+    padding: 2rem 1.5rem 1rem;
     width: 100%;
 
-    font-size: 1.5rem;
     text-align: center;
   }
 `;
 
+const Logo = styled.a`
+  font-size: 2rem;
+  letter-spacing: 2px;
+  color: ${(props) => props.theme.tone_2};
+
+  &:hover {
+    color: ${(props) => props.theme.tone_2};
+  }
+
+  @media ${mQ.mobile_Md} {
+    font-size: 1.8rem;
+  }
+`;
+
 const NavMenu = styled.ul`
-  padding-left: 7rem;
+  margin-left: 7rem;
+
+  transition: all 0.4s ease-in-out 0s;
+
+  @media ${mQ.mobile_Md} {
+    overflow: ${(props) => (props.navMenuToggled ? 'visible' : 'hidden')};
+    height: ${(props) => (props.navMenuToggled ? '300px' : '0px')};
+
+    background-color: ${(props) => props.theme.purpleColor};
+  }
 
   @media ${mQ.mobile_Device} {
-    padding-left: 0;
+    margin-left: 0;
+
     width: 100%;
   }
 `;
 
-const IconsWrapper = styled.div`
-  @media ${mQ.mobile_Device} {
+const NavBarIconContainer = styled.div`
+  font-size: 1rem;
+
+  @media ${mQ.mobile_Md} {
+    padding: 1rem 1.5rem 2rem;
     width: 100%;
+    height: 6.5rem;
   }
 `;
 
-const Icon = styled.div`
+const IconWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 
-  padding: 1rem;
   padding-left: 2rem;
+  padding-right: 1.5rem;
 
-  @media ${mQ.mobile_Sm} {
-    padding: 0.5rem;
+  @media ${mQ.mobile_Md} {
+    &:first-child {
+      padding-left: 0rem;
+    }
+
+    &:last-child {
+      padding-left: 0rem;
+      padding-right: 0rem;
+    }
   }
 
-  @media ${mQ.mobile_Device} {
-    padding-left: 1.5rem;
-
-    &:first-child {
-      padding-left: 0.5rem;
+  @media ${mQ.mobile_Lg} {
+    &:last-child {
+      padding-left: 4rem;
     }
   }
 `;
@@ -86,14 +109,16 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
     color: ${(props) => props.theme.purpleColor};
   }
 
-  @media ${mQ.mobile_Sm} {
-    font-size: 1.5rem;
+  @media ${mQ.mobile_Md} {
+    font-size: 1.8rem;
   }
 `;
 
+const NavMenuTogglerWrapper = styled(IconWrapper)``;
+
 const ItemNumber = styled.div`
   position: absolute;
-  top: 0;
+  top: -15px;
   right: 0;
 
   width: 2rem;
@@ -103,50 +128,77 @@ const ItemNumber = styled.div`
 
   color: #fff;
 
-  transform: translate(45%, -35%);
+  @media ${mQ.mobile_Md} {
+    top: -10px;
+    right: 3px;
 
-  @media ${mQ.mobile_Sm} {
     width: 1.5rem;
     height: 1.5rem;
   }
 `;
 
+const ItemsInCartNumber = styled(ItemNumber)``;
+const ItemsInWishListNumber = styled(ItemNumber)``;
+
 class NavBar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      navMenuToggled: false,
+    };
+  }
+
+  handleNavMenuTogglerClick = () => {
+    this.setState({
+      navMenuToggled: !this.state.navMenuToggled,
+    });
+  };
+
   render() {
     return (
       <StyledNavBar>
         <Container className='container'>
           <FlexContainer className='d-flex align-items-center flex-wrap'>
-            <Logo href='/'>
-              <span className='d-inline-block font-weight-bold'>DIME</span>{' '}
-              STORE
-            </Logo>
-            <NavMenu className='d-flex flex-column flex-md-row order-3 order-md-0 m-0 list-unstyled'>
-              <NavItem transition={transition} />
-            </NavMenu>
-            <IconsWrapper
-              style={{ fontSize: '1rem' }}
-              className='d-flex align-items-center ml-0 ml-md-auto'
+            <LogoWrapper>
+              <Logo href='/'>
+                <span className='d-inline-block font-weight-bold'>DIME</span>{' '}
+                STORE
+              </Logo>
+            </LogoWrapper>
+
+            <NavMenu
+              navMenuToggled={this.state.navMenuToggled}
+              className='d-flex flex-column flex-md-row order-3 order-md-0 list-unstyled'
             >
-              <Icon>
+              <NavItem
+                navMenuToggled={this.state.navMenuToggled}
+                transition={transition}
+              />
+            </NavMenu>
+            <NavBarIconContainer className='d-flex align-items-center ml-sm-auto'>
+              <IconWrapper>
                 <StyledFontAwesomeIcon icon={'search'} />
-              </Icon>
-              <Icon className='position-relative'>
+              </IconWrapper>
+              <IconWrapper className='position-relative'>
                 <StyledFontAwesomeIcon icon='shopping-cart' />
-                <ItemNumber className='d-flex justify-content-center align-items-center font-weight-bold'>
+                <ItemsInCartNumber className='d-flex justify-content-center align-items-center font-weight-bold'>
                   0
-                </ItemNumber>
-              </Icon>
-              <Icon className='position-relative'>
+                </ItemsInCartNumber>
+              </IconWrapper>
+              <IconWrapper className='position-relative'>
                 <StyledFontAwesomeIcon icon={['far', 'heart']} />
-                <ItemNumber className='d-flex justify-content-center align-items-center font-weight-bold'>
+                <ItemsInWishListNumber className='d-flex justify-content-center align-items-center font-weight-bold'>
                   0
-                </ItemNumber>
-              </Icon>
-              <Icon className='d-md-none ml-auto'>
-                <NavMenuIcon />
-              </Icon>
-            </IconsWrapper>
+                </ItemsInWishListNumber>
+              </IconWrapper>
+              <NavMenuTogglerWrapper className='d-md-none ml-auto'>
+                <NavMenuToggler
+                  navMenuToggled={this.state.navMenuToggled}
+                  handleNavMenuTogglerClick={this.handleNavMenuTogglerClick}
+                />
+              </NavMenuTogglerWrapper>
+            </NavBarIconContainer>
           </FlexContainer>
         </Container>
       </StyledNavBar>

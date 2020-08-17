@@ -7,6 +7,18 @@ body {
   line-height: 27px;
 }
 
+a {
+  display: inline-block;
+}
+
 a:hover {
   text-decoration: none;
+}
+
+button:focus {
+  outline: none;
+}
+
+ul {
+  margin-bottom: 0;
 }
